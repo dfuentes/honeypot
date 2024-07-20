@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 var port int = 8080
@@ -40,5 +41,16 @@ func main() {
 	s.HandleFunc("GET /", handle)
 
 	slog.Info("starting server", "port", port)
-	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), &s)
+
+	server := &http.Server{
+		Addr:           fmt.Sprintf("0.0.0.0:%d", port),
+		Handler:        &s,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	if err := server.ListenAndServe(); err != nil {
+		slog.Error("server error", "err", err)
+		os.Exit(1)
+	}
 }
