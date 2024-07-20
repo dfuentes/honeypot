@@ -16,6 +16,9 @@ var port int = 8080
 var script []byte
 
 func init() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
+
 	if envPort, ok := os.LookupEnv("PORT"); ok {
 		envPortI, err := strconv.Atoi(envPort)
 		if err != nil {
