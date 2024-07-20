@@ -29,7 +29,9 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	slog.InfoContext(ctx, "request", "url", r.URL.String(),
 		"remote", r.RemoteAddr,
-		"ua", r.Header.Get(http.CanonicalHeaderKey("user-agent")))
+		"ua", r.Header.Get(http.CanonicalHeaderKey("user-agent")),
+		"xff", r.Header.Get(http.CanonicalHeaderKey("x-forwarded-for")),
+	)
 	w.Write(script)
 }
 
