@@ -33,10 +33,10 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	slog.InfoContext(ctx, "request", "url", r.URL.String(),
 		"remote", r.RemoteAddr,
-		"ua", r.Header.Get(http.CanonicalHeaderKey("user-agent")),
-		"xff", r.Header.Get(http.CanonicalHeaderKey("x-forwarded-for")),
+		"ua", r.Header.Get("user-agent"),
+		"xff", r.Header.Get("x-forwarded-for"),
 	)
-	w.Write(script)
+	w.Write(script) //nolint
 }
 
 func main() {
